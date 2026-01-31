@@ -1,119 +1,229 @@
-# kimi-cli 工程方向知识梳理
+# kimi-cli 深度学习指南
 
-## 文档定位
+> **分析版本**: `21ab19fa6c022e27615003307b2c16021e7dbcad` (main)
+> **分析日期**: 2026-01-31
+> **仓库地址**: https://github.com/MoonshotAI/kimi-cli
 
-**目标读者**：AI Agent 工程师、LLM 应用开发者、系统架构师
-**文档性质**：深度源码分析 + 面试准备材料
-**核心价值**：理解 Agent 系统的设计本质，掌握工程实现细节
+## 项目定位
 
----
+kimi-cli 是 Moonshot AI 开源的交互式 AI Agent CLI 工具，运行在用户终端，帮助完成软件开发任务和终端操作。这是一个**生产级 Agent 应用**，代码量约 21,662 行 Python，展现了顶级工程师的架构设计品味。
+
+**技术栈**: Python 3.12+ + asyncio + Typer + kosong (自研 LLM 框架) + fastmcp (MCP 集成)
 
 ## 学习路径
 
 ```
-第一阶段：基础抽象（2-3 天）
-├── 01-foundation.md
-│   ├── Kosong 消息结构（ContentPart 多态）
-│   ├── Tool 抽象演进（三层语义）
-│   └── PyKAOS 系统抽象
-│
-第二阶段：Agent 核心（3-5 天）
-├── 02-core-agent.md
-│   ├── KimiSoul 主循环
-│   ├── ReAct 实现
-│   └── 状态管理与保护机制
-│
-第三阶段：Context 与 Memory（2-3 天）
-├── 03-context-memory.md
-│   ├── SimpleCompaction 压缩算法
-│   ├── Checkpoint 机制
-│   └── D-Mail 时间旅行
-│
-第四阶段：工具系统（2-3 天）
-├── 04-tools-mcp.md
-│   ├── KimiToolset 依赖注入
-│   ├── MCP 集成
-│   └── 工具权限控制
-│
-第五阶段：Multi-Agent（2-3 天）
-├── 05-multi-agent.md
-│   ├── LaborMarket 架构
-│   ├── Fixed vs Dynamic 子 Agent
-│   └── 上下文隔离机制
-│
-第六阶段：协议层（1-2 天）
-├── 06-protocols.md
-│   ├── ACP 协议
-│   └── Wire 事件总线
-│
-第七阶段：源码深度解析（3-5 天）
-├── 07-deep-dive.md
-│   └── 核心文件逐行分析
-│
-第八阶段：面试准备（2-3 天）
-├── 08-interview-qa.md
-│   └── 15 道核心面试题
-│
-附录：参考材料
-└── 09-appendix.md
-    ├── 术语表
-    ├── 文件索引
-    └── 参考资源
+┌─────────────────────────────────────────────────────────────────┐
+│                        学习路径图                                │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  [01-architecture]  ──────────────────────────────────────────► │
+│       │                                                         │
+│       ▼                                                         │
+│  [02-kosong]  ────► LLM 抽象层，理解 vendor-agnostic 设计       │
+│       │                                                         │
+│       ▼                                                         │
+│  [03-agent-loop]  ─► Agent 循环，理解 Step-based 执行           │
+│       │                                                         │
+│       ▼                                                         │
+│  [04-context]  ───► Context 管理，理解 Checkpoint 机制          │
+│       │                                                         │
+│       ▼                                                         │
+│  [05-tools]  ─────► Tool 系统，理解依赖注入 + MCP 集成          │
+│       │                                                         │
+│       ▼                                                         │
+│  [06-multi-agent] ► Multi-Agent，理解 LaborMarket 设计          │
+│       │                                                         │
+│       ▼                                                         │
+│  [07-wire]  ──────► Wire 协议，理解 Soul/UI 解耦                │
+│       │                                                         │
+│       ▼                                                         │
+│  [08-dmail]  ─────► D-Mail 时间旅行，理解异常驱动控制流         │
+│       │                                                         │
+│       ▼                                                         │
+│  [09-deep-dive]  ─► 核心源码深度解析                            │
+│       │                                                         │
+│       ▼                                                         │
+│  [10-interview-qa] ► 面试 QA（15 题）                           │
+│       │                                                         │
+│       ▼                                                         │
+│  [11-summary]  ───► 知识图谱总结                                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
----
+## 章节目录
 
-## 核心技术点
+| 章节 | 文件 | 核心内容 |
+|------|------|----------|
+| 01 | [01-architecture.md](./01-architecture.md) | 整体架构、分层设计、目录结构 |
+| 02 | [02-kosong.md](./02-kosong.md) | Kosong LLM 框架、ChatProvider 协议、多厂商适配 |
+| 03 | [03-agent-loop.md](./03-agent-loop.md) | Agent 循环、Step 机制、重试策略 |
+| 04 | [04-context.md](./04-context.md) | Context 管理、Checkpoint、Compaction |
+| 05 | [05-tools.md](./05-tools.md) | Tool 系统、依赖注入、MCP 集成 |
+| 06 | [06-multi-agent.md](./06-multi-agent.md) | Multi-Agent、LaborMarket、Task 委派 |
+| 07 | [07-wire.md](./07-wire.md) | Wire 协议、事件流、UI 解耦 |
+| 08 | [08-dmail.md](./08-dmail.md) | D-Mail 时间旅行、异常机制 |
+| 09 | [09-deep-dive.md](./09-deep-dive.md) | 核心源码深度解析 |
+| 10 | [10-interview-qa.md](./10-interview-qa.md) | 面试 QA（15 题） |
+| 11 | [11-summary.md](./11-summary.md) | 知识图谱总结 |
 
-| 类别 | 核心技术 | 面试重点 |
-|------|----------|----------|
-| 架构决策 | 自研 Kosong vs LangChain | Q1, Q2 |
-| Agent 核心 | ReAct 循环、状态管理 | Q6, Q7 |
-| Context | 压缩策略、时间旅行 | Q7 |
-| 工具系统 | 依赖注入、MCP 集成 | Q8, Q9, Q10 |
-| Multi-Agent | 分形架构、上下文隔离 | Q11, Q12 |
-| 协议层 | ACP、Wire 总线 | Q1 |
-
----
-
-## 源码探索顺序
+## 核心架构速览
 
 ```
-第一优先级：理解消息抽象
-packages/kosong/src/kosong/message.py         # ContentPart 多态设计
-packages/kosong/src/kosong/tooling/base.py    # ToolReturnValue 三层语义
-
-第二优先级：理解 Agent 核心
-src/kimi_cli/soul/kimisoul.py:120-200        # 主循环（最重要）
-src/kimi_cli/soul/context.py                  # 上下文管理
-src/kimi_cli/soul/compaction.py:42-117        # 压缩算法
-
-第三优先级：理解工具系统
-src/kimi_cli/soul/toolset.py:80-150           # 依赖注入实现
-src/kimi_cli/mcp.py:45-120                    # MCP 集成
-
-第四优先级：理解 Multi-Agent
-src/kimi_cli/soul/agent.py:200-280            # LaborMarket
-src/kimi_cli/tools/multiagent/task.py:52-150  # Task 工具
-
-第五优先级：理解协议层
-src/kimi_cli/wire/types.py                    # 事件定义
-src/kimi_cli/acp/                             # ACP 协议
+┌─────────────────────────────────────────────────────────────────┐
+│                         kimi-cli 架构                           │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐         │
+���  │  Shell UI   │    │  Print UI   │    │   ACP UI    │         │
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘         │
+│         │                  │                  │                 │
+│         └──────────────────┼──────────────────┘                 │
+│                            │                                    │
+│                     ┌──────▼──────┐                             │
+│                     │    Wire     │  ◄── 事件流抽象             │
+│                     └──────┬──────┘                             │
+│                            │                                    │
+│  ┌─────────────────────────▼─────────────────────────┐         │
+│  │                     KimiSoul                       │         │
+│  │  ┌─────────────┐  ┌─────────────┐  ��───────────┐  │         │
+│  │  │ Agent Loop  │  │   Context   │  │  Approval │  │         │
+│  │  └──────┬──────┘  └──────┬──────┘  └─────┬─────┘  │         │
+│  │         │                │               │        │         │
+│  │  ┌──────▼──────┐  ┌──────▼──────┐  ┌─────▼─────┐  │         │
+│  │  │  Toolset    │  │ Compaction  │  │ DenwaRenji│  │         │
+│  │  └──────┬──────┘  └─────────────┘  └───────────┘  │         │
+│  └─────────┼─────────────────────────────────────────┘         │
+│            │                                                    │
+│  ┌─────────▼─────────┐  ┌─────────────────────────────┐        │
+│  │   KimiToolset     │  │       LaborMarket           │        │
+│  │  ┌─────┐ ┌─────┐  │  │  ┌─────────┐ ┌───────────┐  │        │
+│  │  │Shell│ │File │  │  │  │ Fixed   │ │ Dynamic   │  │        │
+│  │  └─────┘ └─────┘  │  │  │Subagent │ │ Subagent  │  │        │
+│  │  ┌─────┐ ┌─────┐  │  │  └─────────┘ └───────────┘  │        │
+│  │  │ Web │ │ MCP │  │  └─────────────────────────────┘        │
+│  │  └─────┘ └─────┘  │                                         │
+│  └───────────────────┘                                         │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────┐       │
+│  │                      Kosong                          │       │
+│  │  ┌─────────┐  ┌───────────┐  ┌─────────────────┐    │       │
+│  │  │  Kimi   │  │ Anthropic │  │  Google Gemini  │    │       │
+│  │  └─────────┘  └───────────┘  └─────────────────┘    │       │
+│  └─────────────────────────────────────────────────────┘       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
+## 核心特性对比
+
+| 特性 | kimi-cli | Claude Code CLI | Cursor | Aider |
+|------|----------|-----------------|--------|-------|
+| **Multi-Agent** | LaborMarket | Task tool | - | - |
+| **MCP 支持** | fastmcp | native | - | - |
+| **时间旅行** | D-Mail | - | - | - |
+| **Approval 系统** | 细粒度 | 有 | - | 有 |
+| **Context Compaction** | LLM-based | 有 | 有 | 有 |
+| **Skill 系统** | Standard + Flow | 有 | - | - |
+| **IDE 集成** | ACP | ACP | native | - |
+| **自研 LLM 框架** | Kosong | - | - | - |
+
+**独特优势**:
+1. **D-Mail 时间旅行**: 业界唯一支持 checkpoint 回退的 Agent
+2. **Kosong 框架**: 完全解耦 LLM 提供商，易于扩展
+3. **Wire 协议**: 彻底解耦 Soul 和 UI，易于实现新 UI
+4. **Flow Skill**: 支持可视化流程图定义 Agent 行为
+
 ---
 
-## 文档风格说明
+## 核心术语速查
 
-- **无 emoji**：严肃文学风格
-- **代码精炼**：只展示关键逻辑 + 行号 + "为什么"
-- **理论实践平衡**：理论 40% + 实践 60%
-- **深度分析**：每个设计点都回答"为什么"和"trade-off"
+### Agent 核心概念
+
+**KimiSoul**
+- 一句话定义：Agent 的"灵魂"，负责执行 Agent 循环
+- 生活类比：大脑的执行中枢，接收指令、调度工具、产出结果
+- 为什么重要：所有 Agent 行为的入口，理解它就理解了整个执行流程
+- 在本项目中：`src/kimi_cli/soul/kimisoul.py`，核心方法是 `_agent_loop()` 和 `_step()`
+
+**Step**
+- 一句话定义：Agent 循环的最小执行单元，一次 LLM 调用 + 工具执行
+- 生活类比：下棋时的一步，思考（LLM）+ 落子（工具）
+- 为什么重要：粒度适中，便于监控、中断、重试
+- 在本项目中：每个 step 前创建 checkpoint，支持回退
+
+**Turn**
+- 一句话定义：一轮用户交互，从用户输入到 Agent 最终响应
+- 生活类比：一次对话回合，你问我答
+- 为什么重要：区分用户交互边界，管理 context 生命周期
+- 在本项目中：`TurnBegin` 事件标记开始，`no_tool_calls` 或 `tool_rejected` 标记结束
+
+### 框架层概念
+
+**Kosong**
+- 一句话定义：自研 LLM 抽象框架，统一不同厂商的 API
+- 生活类比：万能充电器，不管什么手机都能充
+- 为什么重要：避免 vendor lock-in，一套代码支持多个 LLM
+- 在本项目中：`packages/kosong/`，核心是 `ChatProvider` 协议
+
+**Wire**
+- 一句话定义：Soul 和 UI 之间的事件流通道
+- 生活类比：电话线，两端可以独立升级，只要协议不变
+- 为什么重要：解耦 Agent 核心和交互界面，支持多种 UI
+- 在本项目中：`src/kimi_cli/wire/`，支持 Shell/Print/ACP 三种 UI
+
+**LaborMarket**
+- 一句话定义：管理所有 subagent 的"人才市场"
+- 生活类比：公司的 HR 部门，管理正式员工（fixed）和临时工（dynamic）
+- 为什么重要：统一管理 Multi-Agent，支持任务委派
+- 在本项目中：`src/kimi_cli/soul/agent.py:167`
+
+### 工具系统概念
+
+**KimiToolset**
+- 一句话定义：工具集管理器，负责加载、注册、调用工具
+- 生活类比：工具箱，里面有各种工具，需要时取出来用
+- 为什么重要：统一工具接口，支持内置工具和 MCP 工具
+- 在本项目中：`src/kimi_cli/soul/toolset.py`
+
+**Approval**
+- 一句话定义：工具执行前的用户批准机制
+- 生活类比：银行转账前的短信验证码
+- 为什么重要：安全边界，防止 Agent 执行危险操作
+- 在本项目中：三级策略（YOLO/Session/单次），`src/kimi_cli/soul/approval.py`
+
+**MCP (Model Context Protocol)**
+- 一句话定义：标准化的 LLM 工具扩展协议
+- 生活类比：USB 接口，任何符合标准的设备都能即插即用
+- 为什么重要：生态扩展，无需修改代码即可添加新工具
+- 在本项目中：通过 fastmcp 集成，支持 HTTP 和 stdio 传输
+
+### 独创概念
+
+**D-Mail**
+- 一句话定义：时间旅行机制，允许 Agent 回退到过去的 checkpoint
+- 生活类比：游戏存档，发现走错路可以读档重来
+- 为什么重要：业界唯一，实现"后悔药"功能
+- 在本项目中：`src/kimi_cli/soul/denwarenji.py`，灵感来自《命运石之门》
+
+**Checkpoint**
+- 一句话定义：Context 的快照点，支持回退
+- 生活类比：Git commit，可以随时回到任意版本
+- 为什么重要：D-Mail 的基础，每个 step 前自动创建
+- 在本项目中：`src/kimi_cli/soul/context.py:68`
+
+**Compaction**
+- 一句话定义：Context 压缩，用 LLM 总结历史对话
+- 生活类比：会议纪要，把冗长的讨论压缩成要点
+- 为什么重要：避免 context 超限，保持对话连贯性
+- 在本项目中：`src/kimi_cli/soul/compaction.py`，保留最近 2 轮对话
 
 ---
 
-## 版本信息
+## 章节衔接
 
-- **分析版本**：kimi-cli (master branch)
-- **生成时间**：2026-01-31
-- **分析工具**：ai-agent-codebase-study skill v2
+**下一章预告**：
+- 在 `01-architecture.md` 中，我们将学习 kimi-cli 的整体架构设计
+- 为什么需要学习：理解架构是深入源码的前提，先有全局视野再看细节
+- 关键问题：kimi-cli 如何分层？各层职责是什么？模块间如何通信？

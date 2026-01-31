@@ -3,8 +3,9 @@ Markdown + Git Submodules + Skills
 
 <directory>
 .claude/skills/ - 项目本地 skills (1个: ai-agent-codebase-study)
-kimi-cli-study/ - kimi-cli 深度学习文档生成输出
-open-source-project/ - 开源项目集成与研究 (1子模块: kimi-cli)
+kimi-cli-study/ - kimi-cli 深度学习文档 (11章节: index/architecture/kosong/agent-loop/context/tools/multi-agent/wire/dmail/deep-dive/interview-qa/summary)
+LightRAG-study/ - LightRAG 深度学习文档 (10章节: index/architecture/kg/query/llm/storage/deploy/eval/qa/integration)
+open-source-project/ - 开源项目集成与研究 (2子模块: kimi-cli, LightRAG)
 </directory>
 
 <config>
