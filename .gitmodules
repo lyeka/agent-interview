@@ -1,3 +1,6 @@
 [submodule "open-source-project/kimi-cli"]
 	path = open-source-project/kimi-cli
 	url = https://github.com/MoonshotAI/kimi-cli
+[submodule "open-source-project/LightRAG"]
+	path = open-source-project/LightRAG
+	url = https://github.com/HKUDS/LightRAG
