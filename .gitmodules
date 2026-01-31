@@ -4,3 +4,6 @@
 [submodule "open-source-project/LightRAG"]
 	path = open-source-project/LightRAG
 	url = https://github.com/HKUDS/LightRAG
+[submodule "open-source-project/codex"]
+	path = open-source-project/codex
+	url = https://github.com/openai/codex
