@@ -7,7 +7,8 @@ interview-questions/ - AI Agent 面试题目大全 (225题: 17章节含答案+�
 kimi-cli-study/ - kimi-cli 深度学习文档 (11章节: index/architecture/kosong/agent-loop/context/tools/multi-agent/wire/dmail/deep-dive/interview-qa/summary)
 LightRAG-study/ - LightRAG 深度学习文档 (10章节: index/architecture/kg/query/llm/storage/deploy/eval/qa/integration)
 codex-study/ - OpenAI Codex CLI 深度学习文档 (11章节: index/architecture/agent-loop/tools-system/context-management/prompt-engineering/sandbox-security/mcp-integration/deep-dive/interview-qa/summary)
-open-source-project/ - 开源项目集成与研究 (3子模块: kimi-cli, LightRAG, codex)
+open-source-project/ - 开源项目集成与研究 (4子模块: kimi-cli, LightRAG, codex, openclaw)
+openclaw-study/ - OpenClaw 深度学习文档 (9章节: index/architecture/gateway/agent-runtime/memory-system/plugin-extension/deep-dive/interview-qa/summary)
 </directory>
 
 <config>

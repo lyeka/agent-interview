@@ -7,3 +7,6 @@
 [submodule "open-source-project/codex"]
 	path = open-source-project/codex
 	url = https://github.com/openai/codex
+[submodule "open-source-project/openclaw"]
+	path = open-source-project/openclaw
+	url = git@github.com:openclaw/openclaw.git
